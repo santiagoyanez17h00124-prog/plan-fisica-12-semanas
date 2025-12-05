@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificación Física: Trabajo y Energía - 12 Semanas</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Styles */
+        body { font-family: 'Poppins', sans-serif; background-color: #F3F4F6; color: #1F2937; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+
+        /* Chart Container Styling (Mandatory) */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px; /* Max width to prevent excessive stretching */
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; /* Base height */
+            max-height: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container { height: 300px; }
+        }
+
+        /* Custom Palette - Energetic & Playful */
+        .bg-vibrant-blue { background-color: #2563EB; }
+        .text-vibrant-blue { color: #2563EB; }
+        .border-vibrant-blue { border-color: #2563EB; }
+
+        .bg-vibrant-orange { background-color: #F97316; }
+        .text-vibrant-orange { color: #F97316; }
+        .border-vibrant-orange { border-color: #F97316; }
+
+        .bg-vibrant-yellow { background-color: #FACC15; }
+        .text-vibrant-yellow { color: #CA8A04; } /* Darker for text legibility */
+        .border-vibrant-yellow { border-color: #FACC15; }
+
+        .bg-dark-accent { background-color: #1E293B; }
+
+        /* Utilities */
+        .card-hover { transition: transform 0.2s ease-in-out, box-shadow 0.2s; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.1); }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Style for LaTeX/MathJax output */
+        .math-output {
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+    </style>
+
+    <!-- MathJax for rendering LaTeX equations -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEnvironments: true,
+                processRefs: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log("MathJax is ready.");
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-dark-accent text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="font-bold text-xl tracking-tight"><span class="text-vibrant-yellow">Física</span> Plan 12 Semanas</div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#overview" class="hover:text-vibrant-orange transition">Panorama</a>
+                <a href="#methodology" class="hover:text-vibrant-orange transition">Metodología</a>
+                <a href="#content" class="hover:text-vibrant-orange transition">Contenidos</a>
+                <a href="#syllabus" class="bg-vibrant-blue px-4 py-2 rounded-full hover:bg-blue-600 transition">Ver Syllabus</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-br from-blue-600 to-blue-800 text-white pt-20 pb-24 px-4 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-vibrant-orange opacity-20 rounded-full filter blur-3xl -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-vibrant-yellow opacity-10 rounded-full filter blur-3xl -ml-20 -mb-20"></div>
+
+        <div class="container mx-auto text-center relative z-10 max-w-4xl">
+            <div class="inline-block bg-vibrant-orange text-white text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">Planificación Docente BGU</div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">Trabajo, Energía y <br>Potencia Mecánica</h1>
+            <p class="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                Una hoja de ruta de 12 semanas diseñada para transformar conceptos abstractos en conocimiento tangible. Estrategia paso a paso para entornos con recursos limitados.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="#syllabus" class="bg-vibrant-yellow text-blue-900 font-bold px-8 py-3 rounded-lg shadow-md hover:bg-yellow-400 transition transform hover:-translate-y-1">Explorar Clases</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Key Metrics Cards -->
+    <div id="overview" class="container mx-auto px-4 -mt-16 relative z-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Metric 1 -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-vibrant-blue text-center">
+                <div class="text-4xl font-bold text-vibrant-blue mb-1">12</div>
+                <div class="text-gray-500 font-medium uppercase text-xs tracking-wider">Semanas de Clase</div>
+                <p class="text-sm text-gray-400 mt-2">24 Sesiones Totales</p>
+            </div>
+            <!-- Metric 2 -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-vibrant-orange text-center">
+                <div class="text-4xl font-bold text-vibrant-orange mb-1">3</div>
+                <div class="text-gray-500 font-medium uppercase text-xs tracking-wider">Bloques Temáticos</div>
+                <p class="text-sm text-gray-400 mt-2">Fundamentos, Conservación, Integración</p>
+            </div>
+            <!-- Metric 3 -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-vibrant-yellow text-center">
+                <div class="text-4xl font-bold text-yellow-600 mb-1">DUA</div>
+                <div class="text-gray-500 font-medium uppercase text-xs tracking-wider">Metodología Inclusiva</div>
+                <p class="text-sm text-gray-400 mt-2">Diseño Universal para Aprendizaje</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 py-16 space-y-24">
+
+        <!-- Section: Methodology & Progression -->
+        <div id="methodology" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Chart 1: Methodology -->
+            <div>
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">El Ciclo ERCA + DUA</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Para combatir la pasividad en el aula, la planificación distribuye el tiempo de clase en cuatro fases críticas. El gráfico muestra cómo se prioriza la <strong>Aplicación Práctica</strong> (40%) y la <strong>Conceptualización</strong> (30%) para asegurar que los estudiantes no solo escuchen, sino que hagan.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <div class="chart-container">
+                        <canvas id="methodologyChart"></canvas>
+                    </div>
+                    <div class="text-center mt-4 text-sm text-gray-500">Distribución del tiempo por tipo de actividad</div>
+                </div>
+            </div>
+
+            <!-- Chart 2: Learning Curve -->
+            <div>
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Curva de Complejidad</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        El curso está diseñado para incrementar la carga cognitiva gradualmente. Comenzamos con conceptos tangibles (Bloque I), escalamos a sistemas abstractos (Bloque II) y finalizamos con integración compleja (Bloque III).
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <div class="chart-container">
+                        <canvas id="complexityChart"></canvas>
+                    </div>
+                    <div class="text-center mt-4 text-sm text-gray-500">Nivel de abstracción y dificultad acumulada</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Core Formulas (The Toolkit) -->
+        <div id="content" class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-gray-100 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-orange-500 to-yellow-500"></div>
+
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">El Arsenal Matemático</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Estas son las herramientas conceptuales clave que los estudiantes dominarán. Cada fórmula representa un principio físico fundamental del universo mecánico.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Formula Card 1 -->
+                <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-vibrant-blue hover:bg-blue-50 transition duration-300 group">
+                    <h3 class="font-bold text-gray-700 mb-2 group-hover:text-vibrant-blue">Ley de Hooke</h3>
+                    <div class="text-2xl font-mono text-gray-900 mb-3">$$F = -k \cdot x$$</div>
+                    <p class="text-sm text-gray-500">Fuerza restauradora de un resorte. Proporcional a la deformación.</p>
+                </div>
+
+                <!-- Formula Card 2 -->
+                <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-vibrant-orange hover:bg-orange-50 transition duration-300 group">
+                    <h3 class="font-bold text-gray-700 mb-2 group-hover:text-vibrant-orange">Trabajo Mecánico</h3>
+                    <div class="text-2xl font-mono text-gray-900 mb-3">$$W = F \cdot d \cdot \cos(\theta)$$</div>
+                    <p class="text-sm text-gray-500">Transferencia de energía mediante una fuerza a lo largo de una distancia.</p>
+                </div>
+
+                <!-- Formula Card 3 -->
+                <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-vibrant-yellow hover:bg-yellow-50 transition duration-300 group">
+                    <h3 class="font-bold text-gray-700 mb-2 group-hover:text-yellow-600">Energía Cinética</h3>
+                    <div class="text-2xl font-mono text-gray-900 mb-3">$$E_{c} = \frac{1}{2} m \cdot v^2$$</div>
+                    <p class="text-sm text-gray-500">Energía asociada al movimiento de un cuerpo.</p>
+                </div>
+
+                <!-- Formula Card 4 -->
+                <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-vibrant-blue hover:bg-blue-50 transition duration-300 group">
+                    <h3 class="font-bold text-gray-700 mb-2 group-hover:text-vibrant-blue">Energía Potencial (G)</h3>
+                    <div class="text-2xl font-mono text-gray-900 mb-3">$$E_{p} = m \cdot g \cdot h$$</div>
+                    <p class="text-sm text-gray-500">Energía almacenada por la posición vertical en un campo gravitatorio.</p>
+                </div>
+
+                <!-- Formula Card 5 -->
+                <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-vibrant-orange hover:bg-orange-50 transition duration-300 group">
+                    <h3 class="font-bold text-gray-700 mb-2 group-hover:text-vibrant-orange">Potencial Elástica</h3>
+                    <div class="text-2xl font-mono text-gray-900 mb-3">$$E_{pe} = \frac{1}{2} k \cdot x^2$$</div>
+                    <p class="text-sm text-gray-500">Energía almacenada en un resorte comprimido o estirado.</p>
+                </div>
+
+                <!-- Formula Card 6 -->
+                <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-vibrant-yellow hover:bg-yellow-50 transition duration-300 group">
+                    <h3 class="font-bold text-gray-700 mb-2 group-hover:text-yellow-600">Teorema General</h3>
+                    <div class="text-2xl font-mono text-gray-900 mb-3">$$E_{i} + W_{nc} = E_{f}$$</div>
+                    <p class="text-sm text-gray-500">Conservación de energía considerando pérdidas por fricción ($W_{nc}$).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Assessment Strategy -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <div class="md:col-span-1">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Estrategia de Evaluación</h2>
+                <p class="text-gray-600 mb-6">
+                    En un entorno con recursos limitados, la evaluación se diversifica. No solo cuenta el examen final; el cuaderno, la participación diaria y los proyectos creativos son pilares fundamentales para motivar a los estudiantes menos participativos.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="w-3 h-3 bg-vibrant-blue rounded-full mr-2"></span> Participación Pizarra (20%)
+                    </li>
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="w-3 h-3 bg-vibrant-orange rounded-full mr-2"></span> Cuaderno/Tareas (20%)
+                    </li>
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="w-3 h-3 bg-gray-400 rounded-full mr-2"></span> Tests Rápidos (15%)
+                    </li>
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="w-3 h-3 bg-vibrant-yellow rounded-full mr-2"></span> Proyectos (20%)
+                    </li>
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="w-3 h-3 bg-dark-accent rounded-full mr-2"></span> Exámenes (25%)
+                    </li>
+                </ul>
+            </div>
+            <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-md">
+                <div class="chart-container">
+                    <canvas id="assessmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Interactive Syllabus -->
+        <div id="syllabus" class="scroll-mt-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Syllabus Interactivo Semanal</h2>
+                <p class="text-gray-600">Explore el detalle paso a paso de las 24 sesiones. Haga clic en la tarjeta para ver los ejercicios.</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-10">
+                <button onclick="filterSyllabus('all', this)" class="filter-btn active px-6 py-2 rounded-full font-semibold text-sm transition bg-dark-accent text-white shadow-lg ring-2 ring-offset-2 ring-dark-accent">Todo</button>
+                <button onclick="filterSyllabus('block1', this)" class="filter-btn px-6 py-2 rounded-full font-semibold text-sm transition bg-white text-gray-600 hover:bg-blue-50 hover:text-vibrant-blue shadow ring-2 ring-transparent ring-offset-2 hover:ring-vibrant-blue">Bloque I: Fundamentos</button>
+                <button onclick="filterSyllabus('block2', this)" class="filter-btn px-6 py-2 rounded-full font-semibold text-sm transition bg-white text-gray-600 hover:bg-orange-50 hover:text-vibrant-orange shadow ring-2 ring-transparent ring-offset-2 hover:ring-vibrant-orange">Bloque II: Conservación</button>
+                <button onclick="filterSyllabus('block3', this)" class="filter-btn px-6 py-2 rounded-full font-semibold text-sm transition bg-white text-gray-600 hover:bg-yellow-50 hover:text-yellow-600 shadow ring-2 ring-transparent ring-offset-2 hover:ring-vibrant-yellow">Bloque III: Integración</button>
+            </div>
+
+            <!-- Grid Container for Syllabus Cards -->
+            <div id="syllabus-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Cards will be injected here via JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-dark-accent text-white py-12 text-center">
+        <div class="container mx-auto px-4">
+            <p class="font-bold text-xl mb-2 text-vibrant-yellow">Física BGU</p>
+            <p class="text-gray-400 text-sm mb-6">Planificación basada en Metodología ERCA y Pautas DUA</p>
+            <hr class="border-gray-700 w-1/4 mx-auto mb-6">
+            <p class="text-xs text-gray-500">Generado para apoyo docente con recursos limitados.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Data Source (The 12-Week Plan with Details) ---
+        // Se corrigió la sintaxis de LaTeX en las propiedades 'solved.solution', 'solved.problem', y 'proposed'
+        // Se cambiaron $F = -k \cdot x$ a $$F = -k \cdot x$$ y similares en el HTML para usar MathJax
+        const syllabusData = [
+            // Block 1
+            { 
+                week: 1, id: 1, session: 1, time: "40 min", block: "block1", title: "Intro a la Tensión", color: "blue",
+                desc: "Experiencia Táctil: Uso de cuerdas y ligas. DCL básico de objetos colgados.",
+                concept: "La tensión es la fuerza ejercida por una cuerda, cable, cadena o material similar sobre un objeto. Siempre actúa **alejándose** del objeto que está siendo jalado y paralela a la cuerda.",
+                image_query: "Diagrama de cuerpo libre con tensión",
+                solved: {
+                    problem: "Una lámpara de $5 \\text{ kg}$ cuelga en reposo de una cuerda vertical. ¿Cuál es la magnitud de la tensión en la cuerda?",
+                    solution: "Como la lámpara está en reposo (equilibrio), la suma de fuerzas es cero. Las fuerzas que actúan son el Peso ($P$) hacia abajo y la Tensión ($T$) hacia arriba. $$ \\sum F_y = 0 \\implies T - P = 0 \\implies T = P $$ El peso es $P = m \\cdot g = (5 \\text{ kg})(9.8 \\text{ m/s}^2) = 49 \\text{ N}$. Por lo tanto, la tensión es $T = 49 \\text{ N}$.",
+                    formula: "T = P = m \\cdot g"
+                },
+                proposed: "Un objeto de $12 \\text{ kg}$ es suspendido mediante dos cuerdas que forman ángulos de $30^\\circ$ y $60^\\circ$ con la horizontal. Encuentre la tensión en cada cuerda (utilizar el método de componentes)."
+            },
+            { 
+                week: 1, id: 2, session: 2, time: "80 min", block: "block1", title: "Ley de Hooke", color: "blue",
+                desc: "Laboratorio simple: Medir deformación de resortes. Cálculo de k.",
+                concept: "La Ley de Hooke describe la fuerza restauradora ($F$) de un resorte. Esta fuerza es directamente proporcional a la distancia ($x$) que se estira o comprime el resorte desde su posición de equilibrio. $k$ es la constante de elasticidad del resorte.",
+                image_query: "Ley de Hooke diagrama resorte y fuerza",
+                solved: {
+                    problem: "Un resorte se estira $0.20 \\text{ m}$ cuando se le aplica una fuerza de $50 \\text{ N}$. ¿Cuál es la constante elástica ($k$) del resorte?",
+                    solution: "Usando la Ley de Hooke: $F = k \\cdot x$. Despejando $k$: $$ k = \\frac{F}{x} = \\frac{50 \\text{ N}}{0.20 \\text{ m}} = 250 \\text{ N/m} $$ La constante de elasticidad del resorte es $250 \\text{ N/m}$.",
+                    formula: "F = k \\cdot x"
+                },
+                proposed: "Un resorte con $k = 400 \\text{ N/m}$ es comprimido $15 \\text{ cm}$. Calcule la magnitud de la fuerza restauradora ejercida por el resorte."
+            },
+            { 
+                week: 2, id: 3, session: 3, time: "40 min", block: "block1", title: "Concepto de Trabajo", color: "blue",
+                desc: "Diferenciar esfuerzo vs trabajo físico. Trabajo positivo, negativo y nulo.",
+                concept: "En física, el Trabajo ($W$) se realiza solo cuando una fuerza ($F$) aplicada a un objeto provoca un desplazamiento ($d$). Si la fuerza es paralela al desplazamiento, $W = F \\cdot d$. El trabajo es una transferencia de energía.",
+                image_query: "Trabajo mecánico fuerza y desplazamiento",
+                solved: {
+                    problem: "Una persona empuja una caja con una fuerza constante de $100 \\text{ N}$ a lo largo de $5 \\text{ m}$ en la misma dirección de la fuerza. ¿Cuál es el trabajo realizado?",
+                    solution: "Como la fuerza y el desplazamiento son paralelos ($ \\cos(0^\\circ) = 1 $): $$ W = F \\cdot d = (100 \\text{ N})(5 \\text{ m}) = 500 \\text{ J} $$ El trabajo realizado es de $500 \\text{ Joules}$.",
+                    formula: "W = F \\cdot d"
+                },
+                proposed: "Un estudiante sostiene una mochila de $6 \\text{ kg}$ durante $30 \\text{ minutos}$ mientras espera el autobús. ¿Cuál es el trabajo realizado sobre la mochila por el estudiante? Justifique su respuesta."
+            },
+            { 
+                week: 2, id: 4, session: 4, time: "80 min", block: "block1", title: "Cálculo de Trabajo", color: "blue",
+                desc: "Fórmula $W = Fd \\cos(\\theta)$. Resolución de ejercicios con fuerzas inclinadas.",
+                concept: "Cuando la fuerza forma un ángulo $ \\theta $ con el desplazamiento, solo la componente de la fuerza paralela al desplazamiento realiza trabajo. La fórmula general es $W = F \\cdot d \\cdot \\cos(\\theta)$.",
+                image_query: "Cálculo de trabajo con fuerza inclinada",
+                solved: {
+                    problem: "Un carro es jalado por una cuerda con una fuerza de $50 \\text{ N}$ que forma un ángulo de $37^\\circ$ con la horizontal. Si el carro se mueve $10 \\text{ m}$, calcule el trabajo realizado. (Usar $\\cos(37^\\circ) \\approx 0.8$)",
+                    solution: "Usando la fórmula general: $$ W = F \\cdot d \\cdot \\cos(\\theta) = (50 \\text{ N})(10 \\text{ m}) \\cdot (0.8) = 400 \\text{ J} $$ El trabajo realizado es de $400 \\text{ Joules}$.",
+                    formula: "W = F \\cdot d \\cdot \\cos(\\theta)"
+                },
+                proposed: "Una fuerza de fricción de $15 \\text{ N}$ actúa sobre un objeto que se desliza $8 \\text{ m}$ a lo largo de un piso. Calcule el trabajo realizado por la fuerza de fricción. ¿Es trabajo positivo o negativo? Justifique."
+            },
+            { 
+                week: 3, id: 5, session: 5, time: "40 min", block: "block1", title: "Trabajo Variable", color: "blue",
+                desc: "Gráfico Fuerza vs Distancia para resortes. Área bajo la curva.",
+                concept: "Cuando la fuerza no es constante (como en los resortes), el trabajo se calcula como el **área bajo la curva** de la gráfica Fuerza vs Desplazamiento. Para un resorte estirado $x$, el área es un triángulo: $W = \\frac{1}{2} \\cdot \\text{Base} \\cdot \\text{Altura} = \\frac{1}{2} \\cdot x \\cdot F_{máx} = \\frac{1}{2} k x^2$.",
+                image_query: "Gráfica fuerza vs desplazamiento resorte",
+                solved: {
+                    problem: "Calcule el trabajo realizado para estirar un resorte con constante $k = 300 \\text{ N/m}$ una distancia de $0.15 \\text{ m}$ desde su posición de equilibrio.",
+                    solution: "Usando la fórmula de trabajo elástico: $$ W = \\frac{1}{2} k x^2 = \\frac{1}{2} (300 \\text{ N/m}) (0.15 \\text{ m})^2 = (150 \\text{ N/m}) (0.0225 \\text{ m}^2) \\approx 3.38 \\text{ J} $$ El trabajo realizado es aproximadamente $3.38 \\text{ Joules}$.",
+                    formula: "W = \\frac{1}{2} k x^2"
+                },
+                proposed: "Si el trabajo realizado para comprimir un resorte es de $8 \\text{ J}$ y su constante es $k = 500 \\text{ N/m}$, ¿cuánto se comprimió el resorte ($x$)?"
+            },
+            { 
+                week: 3, id: 6, session: 6, time: "80 min", block: "block1", title: "Teorema Trabajo-Energía", color: "blue",
+                desc: "Conexión entre W y cambio de velocidad (Energía Cinética).",
+                concept: "El Teorema del Trabajo y la Energía establece que el trabajo neto ($W_{neto}$) realizado sobre un objeto es igual al cambio en su energía cinética ($\\Delta E_c$). Esto significa que el trabajo cambia la rapidez del objeto. $W_{neto} = \\Delta E_c = E_{c,f} - E_{c,i}$.",
+                image_query: "Diagrama teorema trabajo y energía cinética",
+                solved: {
+                    problem: "Un objeto de $2 \\text{ kg}$ pasa de $4 \\text{ m/s}$ a $8 \\text{ m/s}$. Calcule el trabajo neto realizado.",
+                    solution: "Energía Cinética Inicial: $E_{c,i} = \\frac{1}{2} (2 \\text{ kg}) (4 \\text{ m/s})^2 = 16 \\text{ J}$. Energía Cinética Final: $E_{c,f} = \\frac{1}{2} (2 \\text{ kg}) (8 \\text{ m/s})^2 = 64 \\text{ J}$. Trabajo Neto: $$ W_{neto} = E_{c,f} - E_{c,i} = 64 \\text{ J} - 16 \\text{ J} = 48 \\text{ J} $$",
+                    formula: "W_{neto} = \\frac{1}{2} m v_f^2 - \\frac{1}{2} m v_i^2"
+                },
+                proposed: "Una pelota de béisbol de $0.15 \\text{ kg}$ llega al bateador a $40 \\text{ m/s}$. Después de ser golpeada, sale a $60 \\text{ m/s}$. ¿Cuál fue el trabajo neto realizado por el bate sobre la pelota?"
+            },
+            { 
+                week: 4, id: 7, session: 7, time: "40 min", block: "block1", title: "Potencia Mecánica", color: "blue",
+                desc: "Rapidez del trabajo. Comparación de motores y atletas.",
+                concept: "La Potencia ($P$) es la rapidez con la que se realiza trabajo. Mide la cantidad de energía transferida o transformada por unidad de tiempo. $P = \\frac{W}{t}$. La unidad de medida es el Watt (W), donde $1 \\text{ W} = 1 \\text{ J/s}$.",
+                image_query: "Concepto de Potencia mecánica y tiempo",
+                solved: {
+                    problem: "Una máquina realiza $10,000 \\text{ J}$ de trabajo en $5 \\text{ segundos}$. Calcule la potencia desarrollada.",
+                    solution: "Usando la fórmula de potencia: $$ P = \\frac{W}{t} = \\frac{10000 \\text{ J}}{5 \\text{ s}} = 2000 \\text{ W} $$ La potencia desarrollada por la máquina es de $2000 \\text{ Watts}$.",
+                    formula: "P = \\frac{W}{t}"
+                },
+                proposed: "Un elevador de $600 \\text{ kg}$ sube a una altura de $25 \\text{ m}$ en $15 \\text{ segundos}$. Calcule la potencia mínima requerida del motor (ignorar la fricción)."
+            },
+            { 
+                week: 4, id: 8, session: 8, time: "80 min", block: "block1", title: "Integración Bloque I", color: "blue",
+                desc: "Problemas complejos: Tensión, Trabajo y Potencia combinados.",
+                concept: "Esta sesión se centra en la aplicación simultánea de la $2^{da}$ Ley de Newton, el cálculo de Tensión/Fuerza y el cálculo de Trabajo y Potencia, en escenarios con movimiento constante o acelerado.",
+                image_query: "Ejemplo de problema de física polea y trabajo",
+                solved: {
+                    problem: "Un motor eleva una carga de $100 \\text{ kg}$ a velocidad constante de $0.5 \\text{ m/s}$. Calcule la potencia que desarrolla el motor.",
+                    solution: "A velocidad constante, la Tensión ($T$) en el cable es igual al Peso ($P$): $T = P = (100 \\text{ kg})(9.8 \\text{ m/s}^2) = 980 \\text{ N}$. La Potencia también se puede calcular como $P = F \\cdot v$. $$ P = T \\cdot v = (980 \\text{ N})(0.5 \\text{ m/s}) = 490 \\text{ W} $$",
+                    formula: "P = F \\cdot v \\text{ (cuando } F \\text{ y } v \\text{ son paralelos)}"
+                },
+                proposed: "Un bloque de $5 \\text{ kg}$ es jalado sobre una superficie horizontal rugosa ($\\mu_k = 0.2$) por una cuerda horizontal con una tensión de $30 \\text{ N}$. Calcule el trabajo neto y la potencia promedio si el bloque se mueve $4 \\text{ m}$ en $2 \\text{ segundos}$."
+            },
+            
+            // Block 2 (Simplified content for non-detailed classes)
+            { 
+                week: 5, id: 9, session: 9, time: "40 min", block: "block2", title: "Energía Potencial (G)", color: "orange", 
+                desc: "Importancia de la altura y niveles de referencia. $E_p = mgh$.", 
+                concept: "Energía almacenada por la posición vertical. $ \\Delta E_p = -W_{grav} $", 
+                image_query: "Diagrama Energía Potencial Gravitatoria", 
+                solved: {
+                    problem: "Una piedra de $0.5 \\text{ kg}$ es levantada $2 \\text{ m}$ sobre el suelo. Calcule su energía potencial gravitatoria con respecto al suelo.",
+                    solution: "Usando la fórmula de energía potencial: $$ E_p = m \\cdot g \\cdot h = (0.5 \\text{ kg})(9.8 \\text{ m/s}^2)(2 \\text{ m}) = 9.8 \\text{ J} $$",
+                    formula: "E_p = m \\cdot g \\cdot h"
+                }, 
+                proposed: "Un libro de $1.5 \\text{ kg}$ está en el borde de una mesa de $1.2 \\text{ m}$ de altura. Si el nivel de referencia se establece en el techo, ¿cómo cambia su energía potencial? (Considere una altura de techo de $3 \\text{ m}$)."
+            },
+            { 
+                week: 5, id: 10, session: 10, time: "80 min", block: "block2", title: "Energía Mecánica Total", color: "orange", 
+                desc: "Suma de $E_c + E_p + E_{pe}$. Introducción a sistemas completos.", 
+                concept: "La Energía Mecánica Total ($E_{meca}$) de un sistema es la suma de sus energías cinética y potencial (gravitatoria y elástica). $E_{meca} = E_c + E_p + E_{pe}$.", 
+                image_query: "Concepto de Energía Mecánica Total", 
+                solved: {
+                    problem: "Un objeto de $4 \\text{ kg}$ se mueve a $3 \\text{ m/s}$ a una altura de $10 \\text{ m}$. Calcule su energía mecánica total.",
+                    solution: "Energía Cinética: $E_c = \\frac{1}{2} m v^2 = \\frac{1}{2}(4)(3)^2 = 18 \\text{ J}$. Energía Potencial: $E_p = m g h = (4)(9.8)(10) = 392 \\text{ J}$. Energía Mecánica Total: $$ E_{meca} = E_c + E_p = 18 \\text{ J} + 392 \\text{ J} = 410 \\text{ J} $$",
+                    formula: "E_{meca} = E_c + E_p"
+                }, 
+                proposed: "Un carro de montaña rusa de $500 \\text{ kg}$ pasa por el punto más bajo (referencia $h=0$) a $20 \\text{ m/s}$. Calcule su energía mecánica total en ese punto."
+            },
+            { 
+                week: 6, id: 11, session: 11, time: "40 min", block: "block2", title: "Fuerzas Conservativas", color: "orange", 
+                desc: "Diferencia entre Gravedad/Resortes y Fricción. Independencia de trayectoria.", 
+                concept: "Fuerzas cuyo trabajo no depende de la trayectoria (Gravedad, Elástica). Su trabajo solo depende de las posiciones inicial y final.", 
+                image_query: "Fuerzas conservativas y no conservativas", 
+                solved: {
+                    problem: "Se lanza una pelota de $0.2 \\text{ kg}$ hacia arriba desde $h=0$ y alcanza $h=5 \\text{ m}$. Calcule el trabajo realizado por la gravedad en el viaje de subida y en el viaje de bajada.",
+                    solution: "Subida: $W_{grav} = - \\Delta E_p = - (E_{p,f} - E_{p,i}) = - (9.8 - 0) = -9.8 \\text{ J}$. Bajada: $W_{grav} = - (0 - 9.8) = 9.8 \\text{ J}$. El trabajo neto total es cero, típico de fuerzas conservativas.",
+                    formula: "W_{grav} = - \\Delta E_p"
+                }, 
+                proposed: "Una persona sube una caja de $10 \\text{ kg}$ por una rampa de $5 \\text{ m}$ de longitud hasta una altura de $3 \\text{ m}$. ¿Cuál es el trabajo realizado por la fuerza de gravedad? ¿Qué pasaría si la rampa fuera más corta?"
+            },
+            { 
+                week: 6, id: 12, session: 12, time: "80 min", block: "block2", title: "Conservación Ideal", color: "orange", 
+                desc: "Principio $E_i = E_f$ en caídas libres y montañas rusas ideales.", 
+                concept: "Si solo actúan fuerzas conservativas, la Energía Mecánica Total se conserva: $E_{c,i} + E_{p,i} = E_{c,f} + E_{p,f}$", 
+                image_query: "Montaña rusa conservación energía", 
+                solved: {
+                    problem: "Una pelota cae desde $h_i = 10 \\text{ m}$ (parte del reposo, $v_i=0$). Calcule su velocidad al llegar al suelo ($h_f = 0$).",
+                    solution: "Por conservación de energía: $E_{meca,i} = E_{meca,f}$. $$ E_{c,i} + E_{p,i} = E_{c,f} + E_{p,f} \\implies 0 + mgh_i = \\frac{1}{2} m v_f^2 + 0 $$ $$ v_f = \\sqrt{2 g h_i} = \\sqrt{2 (9.8 \\text{ m/s}^2) (10 \\text{ m})} \\approx 14 \\text{ m/s} $$",
+                    formula: "v_f = \\sqrt{2 g h_i}"
+                }, 
+                proposed: "En una montaña rusa ideal, si el carro tiene una velocidad de $15 \\text{ m/s}$ a $h_i = 5 \\text{ m}$, ¿cuál es la máxima altura que podrá alcanzar?"
+            },
+            { 
+                week: 7, id: 13, session: 13, time: "40 min", block: "block2", title: "Péndulos", color: "orange", 
+                desc: "Intercambio continuo entre Cinética y Potencial en sistemas oscilantes.", 
+                concept: "Análisis de la energía en el punto más alto (solo $E_p$) y más bajo (solo $E_c$). La velocidad es máxima en el punto más bajo.", 
+                image_query: "Diagrama de energía en un péndulo", 
+                solved: {
+                    problem: "Un péndulo de $1 \\text{ kg}$ se suelta desde una altura de $0.2 \\text{ m}$. ¿Cuál es su energía cinética máxima y dónde ocurre?",
+                    solution: "La energía cinética máxima es igual a la potencial inicial (conversión total de energía): $$ E_{c,máx} = E_{p,i} = m g h_i = (1 \\text{ kg})(9.8 \\text{ m/s}^2)(0.2 \\text{ m}) = 1.96 \\text{ J} $$ Ocurre en el punto más bajo de la trayectoria (posición de equilibrio).",
+                    formula: "E_{c,máx} = E_{p,i}"
+                }, 
+                proposed: "Si la velocidad máxima de un péndulo es $2 \\text{ m/s}$, ¿cuál es la altura máxima alcanzada por la masa del péndulo?"
+            },
+            { 
+                week: 7, id: 14, session: 14, time: "80 min", block: "block2", title: "Sistemas Masa-Resorte", color: "orange", 
+                desc: "Conservación en sistemas horizontales elásticos. Velocidad máxima y compresión.", 
+                concept: "Intercambio entre $E_c$ y $E_{pe}$. $\\frac{1}{2} m v_{máx}^2 = \\frac{1}{2} k x_{máx}^2$.", 
+                image_query: "Bloque sobre resorte conservación energía", 
+                solved: {
+                    problem: "Un resorte ($k=100 \\text{ N/m}$) es comprimido $0.1 \\text{ m}$ por un bloque de $0.5 \\text{ kg}$. Si se suelta, ¿cuál es la velocidad máxima del bloque?",
+                    solution: "Conservación: $E_{pe,i} = E_{c,f}$. $$ \\frac{1}{2} k x^2 = \\frac{1}{2} m v^2 \\implies v = \\sqrt{\\frac{k x^2}{m}} $$ $$ v = \\sqrt{\\frac{(100 \\text{ N/m}) (0.1 \\text{ m})^2}{0.5 \\text{ kg}}} = \\sqrt{2 \\text{ m}^2/s^2} \\approx 1.41 \\text{ m/s} $$",
+                    formula: "v = \\sqrt{\\frac{k x^2}{m}}"
+                }, 
+                proposed: "Un bloque de $2 \\text{ kg}$ con velocidad de $5 \\text{ m/s}$ choca contra un resorte ($k=800 \\text{ N/m}$). ¿Cuánto se comprime el resorte ($x$)? (Ignore la fricción)."
+            },
+            { 
+                week: 8, id: 15, session: 15, time: "40 min", block: "block2", title: "Sistemas No Conservativos", color: "orange", 
+                desc: "Introducción a la Fricción como pérdida de energía (calor).", 
+                concept: "El trabajo de las fuerzas no conservativas (como la fricción) es la pérdida de energía mecánica. $W_{nc} = E_{meca,f} - E_{meca,i}$", 
+                image_query: "Trabajo de la fricción como pérdida de energía", 
+                solved: {
+                    problem: "Un bloque se desliza sobre una superficie rugosa y su energía mecánica inicial es $50 \\text{ J}$ y la final es $30 \\text{ J}$. Calcule el trabajo realizado por la fricción.",
+                    solution: "Usando la ecuación general: $$ W_{nc} = E_{meca,f} - E_{meca,i} = 30 \\text{ J} - 50 \\text{ J} = -20 \\text{ J} $$ El trabajo realizado por la fricción es $-20 \\text{ Joules}$ (trabajo negativo).",
+                    formula: "W_{nc} = E_{f} - E_{i}"
+                }, 
+                proposed: "Si un carro de $10 \\text{ kg}$ es empujado $5 \\text{ m}$ por una fuerza de fricción de $10 \\text{ N}$, ¿cuánto trabajo se pierde? ¿A qué corresponde esa pérdida de energía?"
+            },
+            { 
+                week: 8, id: 16, session: 16, time: "80 min", block: "block2", title: "Teorema Generalizado", color: "orange", 
+                desc: "Resolución de problemas de rampas con fricción: $E_i + W_{nc} = E_f$.", 
+                concept: "Ecuación general de energía, incluye el trabajo no conservativo como un término de corrección en la conservación.", 
+                image_query: "Ecuación general de conservación de energía", 
+                solved: {
+                    problem: "Un objeto de $2 \\text{ kg}$ se desliza por una rampa desde $h_i = 5 \\text{ m}$ y llega al suelo con $v_f = 8 \\text{ m/s}$. Calcule el trabajo realizado por la fricción ($W_{nc}$).",
+                    solution: "Energía Inicial: $E_i = mgh_i = (2)(9.8)(5) = 98 \\text{ J}$. Energía Final: $E_f = \\frac{1}{2} m v_f^2 = \\frac{1}{2} (2)(8^2) = 64 \\text{ J}$. $$ W_{nc} = E_f - E_i = 64 \\text{ J} - 98 \\text{ J} = -34 \\text{ J} $$",
+                    formula: "E_{i} + W_{nc} = E_{f}"
+                }, 
+                proposed: "Un esquiador parte del reposo en la cima de una colina de $20 \\text{ m}$ de altura. Si llega a la base con una velocidad de $16 \\text{ m/s}$, ¿cuánto trabajo no conservativo (fricción, aire) se realizó sobre el esquiador?"
+            },
+
+            // Block 3 (Simplified content for non-detailed classes)
+            { week: 9, id: 17, session: 17, time: "40 min", block: "block3", title: "Repaso de Fórmulas", color: "yellow", desc: "Juego 'Cadena de Fórmulas' y creación del Muro de Fórmulas.", concept: "Repaso integral.", image_query: "Muro de fórmulas de física", solved: null, proposed: null },
+            { week: 9, id: 18, session: 18, time: "80 min", block: "block3", title: "Simulacro Combinado", color: "yellow", desc: "Problemas de alto nivel integrando Potencia, Trabajo y Fricción.", concept: "Práctica de resolución avanzada.", image_query: "Problemas avanzados de trabajo y energía", solved: null, proposed: null },
+            { week: 10, id: 19, session: 19, time: "40 min", block: "block3", title: "Proyecto Final", color: "yellow", desc: "Lanzamiento del proyecto: Diagrama Explicativo de un sistema real.", concept: "Aplicación práctica.", image_query: "Diagrama explicativo sistema físico", solved: null, proposed: null },
+            { week: 10, id: 20, session: 20, time: "80 min", block: "block3", title: "Taller DCL Avanzado", color: "yellow", desc: "Planos inclinados con tensión y fricción. Descomposición vectorial.", concept: "Dominio de la descomposición de fuerzas.", image_query: "Diagrama de cuerpo libre avanzado plano inclinado", solved: null, proposed: null },
+            { week: 11, id: 21, session: 21, time: "40 min", block: "block3", title: "Creación de Escenarios", color: "yellow", desc: "Estudiantes crean problemas para retar a sus compañeros.", concept: "Evaluación entre pares.", image_query: "Estudiantes creando problemas de física", solved: null, proposed: null },
+            { week: 11, id: 22, session: 22, time: "80 min", block: "block3", title: "Evaluación Sumativa", color: "yellow", desc: "Prueba escrita abarcando Bloques I y II.", concept: "Evaluación formal.", image_query: "Estudiante rindiendo examen de física", solved: null, proposed: null },
+            { week: 12, id: 23, session: 23, time: "40 min", block: "block3", title: "Exposición de Proyectos", color: "yellow", desc: "Defensa oral de los diagramas explicativos.", concept: "Presentación y defensa.", image_query: "Estudiante exponiendo proyecto de física", solved: null, proposed: null },
+            { week: 12, id: 24, session: 24, time: "80 min", block: "block3", title: "Reflexión Final", color: "yellow", desc: "Debate sobre seguridad y energía en la vida diaria. Cierre.", concept: "Conexión con el mundo real.", image_query: "Debate sobre energía y seguridad", solved: null, proposed: null }
+        ];
+
+        // --- 2. Chart Configuration Helpers ---
+
+        // Wrap Labels Helper
+        function splitLabel(label, maxLen = 15) {
+            if (label.length <= maxLen) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length <= maxLen) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const commonTooltipOptions = {
+            titleFont: { size: 13, family: "'Poppins', sans-serif" },
+            bodyFont: { size: 12, family: "'Poppins', sans-serif" },
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) return label.join(' ');
+                    return label;
+                }
+            }
+        };
+
+        // --- 3. Charts Initialization ---
+
+        function initCharts() {
+            // Chart 1: Methodology (Doughnut)
+            const ctxMethod = document.getElementById('methodologyChart').getContext('2d');
+            new Chart(ctxMethod, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Aplicación Práctica', 'Conceptualización', 'Experiencia Táctil', 'Reflexión'],
+                    datasets: [{
+                        data: [40, 30, 15, 15],
+                        backgroundColor: ['#2563EB', '#FACC15', '#F97316', '#60A5FA'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, font: { family: "'Poppins', sans-serif" } } },
+                        tooltip: commonTooltipOptions
+                    }
+                }
+            });
+
+            // Chart 2: Complexity (Line)
+            const ctxComplex = document.getElementById('complexityChart').getContext('2d');
+            new Chart(ctxComplex, {
+                type: 'line',
+                data: {
+                    labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12'],
+                    datasets: [{
+                        label: 'Carga Cognitiva',
+                        data: [10, 25, 35, 50, 55, 65, 75, 85, 45, 90, 95, 100],
+                        borderColor: '#F97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#2563EB',
+                        pointBorderColor: '#fff',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'Nivel de Dificultad %' } },
+                        x: { title: { display: true, text: 'Semanas' } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: commonTooltipOptions
+                    }
+                }
+            });
+
+            // Chart 3: Assessment (Bar)
+            const ctxAssess = document.getElementById('assessmentChart').getContext('2d');
+            const assessLabelsRaw = ["Participación Pizarra", "Cuaderno / Tareas", "Tests Rápidos", "Proyectos", "Exámenes"];
+            const assessLabelsWrapped = assessLabelsRaw.map(l => splitLabel(l));
+
+            new Chart(ctxAssess, {
+                type: 'bar',
+                data: {
+                    labels: assessLabelsWrapped,
+                    datasets: [{
+                        label: 'Peso Porcentual',
+                        data: [20, 20, 15, 20, 25],
+                        backgroundColor: ['#2563EB', '#F97316', '#9CA3AF', '#FACC15', '#1E293B'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 30 }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: commonTooltipOptions
+                    }
+                }
+            });
+        }
+        window.onload = initCharts;
+
+
+        // --- 4. Interactive Syllabus Logic ---
+
+        const gridContainer = document.getElementById('syllabus-grid');
+        const modalContainer = document.getElementById('modal-container');
+
+        function renderSyllabus(filter) {
+            gridContainer.innerHTML = '';
+
+            const filteredData = filter === 'all'
+                ? syllabusData
+                : syllabusData.filter(item => item.block === filter);
+
+            filteredData.forEach(item => {
+                const card = document.createElement('button');
+
+                // Color mapping for borders and badges
+                let borderColor = 'border-gray-200';
+                let badgeColor = 'bg-gray-200 text-gray-700';
+
+                if (item.color === 'blue') {
+                    borderColor = 'border-blue-200';
+                    badgeColor = 'bg-blue-100 text-vibrant-blue';
+                } else if (item.color === 'orange') {
+                    borderColor = 'border-orange-200';
+                    badgeColor = 'bg-orange-100 text-vibrant-orange';
+                } else if (item.color === 'yellow') {
+                    borderColor = 'border-yellow-200';
+                    badgeColor = 'bg-yellow-100 text-yellow-700';
+                }
+
+                card.className = `bg-white p-6 rounded-xl border-2 ${borderColor} card-hover flex flex-col h-full text-left`;
+                card.setAttribute('onclick', `showClassDetail(${item.id})`);
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Semana ${item.week} | Sesión ${item.session}</span>
+                            <h3 class="font-bold text-lg text-gray-800 leading-tight mt-1">${item.title}</h3>
+                        </div>
+                        <span class="${badgeColor} text-xs font-bold px-2 py-1 rounded-md whitespace-nowrap">${item.time}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 flex-grow">${item.desc}</p>
+                    <div class="mt-4 pt-4 border-t border-gray-100 flex items-center text-xs text-gray-400 font-mono">
+                        ${item.solved ? '<span class="text-vibrant-blue font-bold">Ver Detalles & Ejercicios »</span>' : 'Detalle no disponible (Bloque en Desarrollo)'}
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        function filterSyllabus(filter, button) {
+            // Update Buttons State
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-dark-accent', 'text-white', 'shadow-lg', 'ring-dark-accent', 'ring-vibrant-blue', 'ring-vibrant-orange', 'ring-vibrant-yellow');
+                btn.classList.add('bg-white', 'text-gray-600', 'shadow');
+                btn.classList.add(filter === 'all' ? 'hover:bg-gray-100' : (filter === 'block1' ? 'hover:bg-blue-50' : (filter === 'block2' ? 'hover:bg-orange-50' : 'hover:bg-yellow-50')));
+                btn.classList.add(filter === 'all' ? 'hover:text-dark-accent' : (filter === 'block1' ? 'hover:text-vibrant-blue' : (filter === 'block2' ? 'hover:text-vibrant-orange' : 'hover:text-yellow-600')));
+            });
+
+            if (button) {
+                 button.classList.add('bg-dark-accent', 'text-white', 'shadow-lg');
+                 button.classList.remove('bg-white', 'text-gray-600');
+            } else if (filter === 'all') { // Handle initial load or direct call without button reference
+                document.querySelector('[onclick*="filterSyllabus(\'all\',"]').classList.add('bg-dark-accent', 'text-white', 'shadow-lg');
+                document.querySelector('[onclick*="filterSyllabus(\'all\',"]').classList.remove('bg-white', 'text-gray-600');
+            }
+
+            renderSyllabus(filter);
+        }
+
+        function showClassDetail(id) {
+            const item = syllabusData.find(d => d.id === id);
+            if (!item) return;
+
+            let solvedSection = '';
+            let proposedSection = '';
+            
+            // --- Helper para renderizar contenido LaTeX/MathJax ---
+            // Utilizamos una función que envuelve el contenido en un span y luego se lo pasamos a MathJax
+            function renderMath(content) {
+                // Remplazamos los delimitadores $$ y $ en el problema por delimitadores internos de MathJax
+                // NOTA: MathJax ya está configurado para manejar $$...$$ y $...$
+                return `<div class="math-output tex2jax_process">${content}</div>`;
+            }
+
+            if (item.solved) {
+                solvedSection = `
+                    <h3 class="text-xl font-bold text-gray-700 mt-8 mb-4 border-b pb-2">Ejemplo Resuelto</h3>
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-vibrant-blue mb-4">
+                        <p class="font-semibold text-gray-700 mb-2">Problema:</p>
+                        ${renderMath(item.solved.problem)}
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-400">
+                        <p class="font-semibold text-gray-700 mb-2">Solución y Fórmula Clave ($${item.solved.formula}$):</p>
+                        ${renderMath(item.solved.solution)}
+                    </div>
+                `;
+            } else {
+                 solvedSection = `
+                    <div class="bg-gray-100 p-4 rounded-lg mt-8 text-center text-gray-600">
+                        Detalles de ejercicios y solución para este bloque estarán disponibles en futuras actualizaciones.
+                    </div>
+                 `;
+            }
+
+            if (item.proposed) {
+                proposedSection = `
+                    <h3 class="text-xl font-bold text-gray-700 mt-8 mb-4 border-b pb-2">Ejercicio Propuesto</h3>
+                    <div class="bg-vibrant-yellow/30 p-4 rounded-lg border-l-4 border-vibrant-yellow">
+                        <p class="font-semibold text-gray-700 mb-2">Para el Estudiante:</p>
+                        ${renderMath(item.proposed)}
+                        <p class="text-xs text-yellow-700 mt-2"><strong>Objetivo:</strong> Evaluar la comprensión y aplicación autónoma del principio clave de la sesión.</p>
+                    </div>
+                `;
+            }
+
+            const modalHTML = `
+                <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+                    <div class="modal-content w-full lg:w-3/5">
+                        <button onclick="document.getElementById('modal-overlay').remove()" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold">&times;</button>
+
+                        <h2 class="text-3xl font-extrabold text-vibrant-blue mb-2">${item.title}</h2>
+                        <div class="flex items-center text-sm text-gray-500 mb-6 space-x-3">
+                            <span>Semana ${item.week} | Sesión ${item.session}</span>
+                            <span class="font-bold text-vibrant-orange">${item.time}</span>
+                            <span>Bloque ${item.block.replace('block', '')}</span>
+                        </div>
+
+                        <!-- Conceptual Image Placeholder -->
+                        <div class="w-full bg-gray-200 h-64 rounded-xl mb-6 overflow-hidden flex items-center justify-center">
+                            <img src="https://placehold.co/600x300/e0f2fe/0369a1?text=${item.image_query.replace(/ /g, '+')}" 
+                                 alt="Diagrama conceptual de ${item.title}" 
+                                 class="w-full h-full object-cover"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/600x300/e0f2fe/0369a1?text=Diagrama+conceptual+de+física'"
+                            >
+                        </div>
+                        
+                        <!-- Contenido Clave -->
+                        <h3 class="text-xl font-bold text-gray-700 mb-4 border-b pb-2">Concepto Clave</h3>
+                        <p class="text-gray-600 leading-relaxed">${item.concept}</p>
+                        <p class="text-gray-600 text-sm italic mt-2">${item.desc}</p>
+
+                        <!-- Ejercicio Resuelto -->
+                        ${solvedSection}
+
+                        <!-- Ejercicio Propuesto -->
+                        ${proposedSection}
+                        
+                    </div>
+                </div>
+            `;
+            const modalElement = document.createElement('div');
+            modalElement.id = 'modal-overlay';
+            modalElement.innerHTML = modalHTML;
+            modalContainer.appendChild(modalElement);
+            
+            // Recargar MathJax para renderizar el contenido dinámico del modal
+            if (window.MathJax) {
+                window.MathJax.typesetPromise([modalElement]).catch((err) => console.error("MathJax typesetting failed", err));
+            }
+        }
+
+        function closeModal(event) {
+            if (event.target.id === 'modal-overlay') {
+                document.getElementById('modal-overlay').remove();
+            }
+        }
+
+        // Initial Render
+        filterSyllabus('all', document.querySelector('[onclick*="filterSyllabus(\'all\',"]'));
+
+    </script>
+</body>
+</html>
